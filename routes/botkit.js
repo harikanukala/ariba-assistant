@@ -14,13 +14,15 @@ if (!process.env.SLACK_BOT_TOKEN) {
 }
 
 // Cheking for the wit token
-if (!process.env.WIT_TOKEN) {
-    console.error('Error: Specify a Wit token in an environment variable');
-    process.exit(1);
-}
+// if (!process.env.WIT_TOKEN) {
+//     console.error('Error: Specify a Wit token in an environment variable');
+//     process.exit(1);
+// }
+
+const WIT_TOKEN="PEVL7DWLOGHF6T6ZQPO6KUC6VC2SRNW7";
 
 var wit = require('botkit-witai')({
-    accessToken: process.env.WIT_TOKEN,
+    accessToken: WIT_TOKEN,
     minConfidence: 0.6,
     logLevel: 'debug'
 });
@@ -30,10 +32,7 @@ const controller = Botkit.slackbot();
 
 // Starts the websocket connection
 var slack_bot = controller.spawn({
-    token: process.env.SLACK_BOT_TOKEN,
-    incoming_webhook: {
-        url : process.env.INCOMING_WEBHOOK_URL
-    }
+    token: process.env.SLACK_BOT_TOKEN
 });
 
 slack_bot.startRTM(err => {
@@ -42,16 +41,16 @@ slack_bot.startRTM(err => {
     }
 });
 
-slack_bot.sendWebhook({
-    text: 'Invoice 4711 rejected'
-}, (err, res) =>    {
-    if(err) {
-        console.log("Error in posting to incoming webhook");
-        return;
-    }
-    console.log("Posted to Incoming webhook successfully");
-console.log(res);
-});
+// slack_bot.sendWebhook({
+//     text: 'Invoice 4711 rejected'
+// }, (err, res) =>    {
+//     if(err) {
+//         console.log("Error in posting to incoming webhook");
+//         return;
+//     }
+//     console.log("Posted to Incoming webhook successfully");
+// console.log(res);
+// });
 
 controller.middleware.receive.use(wit.receive);
 
