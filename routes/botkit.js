@@ -35,48 +35,26 @@ var slack_bot = controller.spawn({
     token: process.env.SLACK_BOT_TOKEN
 });
 
-slack_bot.startRTM(err => {
+slack_bot.startRTM(function (err, bot, payload) {
     if (err) {
-        console.error(`Error: Could not start the bot - ${err}`);
+        throw new Error(err)
     }
-});
 
-// slack_bot.sendWebhook({
-//     text: 'Invoice 4711 rejected'
-// }, (err, res) =>    {
-//     if(err) {
-//         console.log("Error in posting to incoming webhook");
-//         return;
-//     }
-//     console.log("Posted to Incoming webhook successfully");
-// console.log(res);
-// });
+    console.log('Connected to Slack RTM')
+})
 
 controller.middleware.receive.use(wit.receive);
 
-// Listening for the event when the bot joins a channel
-// controller.on('channel_joined', (bot, { channel: { id, name } }) => {
-//     bot.say({
-//     text: `Thank you for inviting me to channel ${name}`,
-//     channel: id
-// });
-// });
+controller.on('bot_channel_join', function (bot, message) {
+    bot.reply(message, "I'm here!")
+})
 
-// controller.on('im_open', (bot, message) => {
-//     console.log("**im_open***");
-// console.log(message);
-// });
-
-controller.on('hello', (bot, message) => {
-    console.log("Got Helloooo");
-console.log(message);
-bot.say({
-    text: 'Thank you for inviting me to channel',
-    channel: 'U3ZPENRP1'
-});
+controller.on('hello', function(bot, message){
+    console.log("Got Helloooo")
+    bot.reply(message,"Hi I am bot!!")
 });
 
-controller.hears(['(.*)'], 'direct_message,direct_mention,mention', (bot, message) => {
+controller.hears(['(.*)'], 'direct_message,direct_mention,mention', function(bot, message){
     console.log("*****");
 console.log(message);
 
