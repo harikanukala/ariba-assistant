@@ -8,10 +8,6 @@ const actions = require("./actions");
 var botkit = {};
 
 // Cheking for the slack token
-if (!process.env.SLACK_BOT_TOKEN) {
-    console.error('Error: Specify a Slack token in an environment variable');
-    process.exit(1);
-}
 
 // Cheking for the wit token
 // if (!process.env.WIT_TOKEN) {
@@ -32,7 +28,7 @@ const controller = Botkit.slackbot();
 
 // Starts the websocket connection
 var slack_bot = controller.spawn({
-    token: process.env.SLACK_BOT_TOKEN
+    token: process.env.SLACK_TOKEN
 });
 
 slack_bot.startRTM(function (err, bot, payload) {
