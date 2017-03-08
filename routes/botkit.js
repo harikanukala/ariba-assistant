@@ -55,17 +55,17 @@ slack_bot.startRTM(err => {
 controller.middleware.receive.use(wit.receive);
 
 // Listening for the event when the bot joins a channel
-controller.on('channel_joined', (bot, { channel: { id, name } }) => {
-    bot.say({
-    text: `Thank you for inviting me to channel ${name}`,
-    channel: id
-});
-});
+// controller.on('channel_joined', (bot, { channel: { id, name } }) => {
+//     bot.say({
+//     text: `Thank you for inviting me to channel ${name}`,
+//     channel: id
+// });
+// });
 
-controller.on('im_open', (bot, message) => {
-    console.log("**im_open***");
-console.log(message);
-});
+// controller.on('im_open', (bot, message) => {
+//     console.log("**im_open***");
+// console.log(message);
+// });
 
 controller.on('hello', (bot, message) => {
     console.log("Got Helloooo");
