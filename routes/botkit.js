@@ -10,14 +10,6 @@ const beepboop_botkit = require('beepboop-botkit');
 function BotKit(app)  {
     var botkit = {};
 
-    // var clientId = '135147242677.142534151139';
-    // var clientSecret = '224502f99ebf322637fd9ef1daaa7303';
-
-// Checking for the wit token
-//     if (!process.env.WIT_TOKEN) {
-//         console.error('Error: Specify a Wit token in an environment variable');
-//         process.exit(1);
-//     }
     const WIT_TOKEN="PEVL7DWLOGHF6T6ZQPO6KUC6VC2SRNW7";
     var wit = require('./wit')({
         accessToken: WIT_TOKEN,
@@ -28,47 +20,6 @@ function BotKit(app)  {
 
 // Creates the Slack bot
     const controller = Botkit.slackbot();
-    require('../components/webserver/')(controller)
-
-    // controller.configureSlackApp({
-    //     clientId: clientId,
-    //     clientSecret: clientSecret,
-    //     scopes: ['incoming-webhook','team:read','users:read','channels:read','im:read','im:write','groups:read','emoji:read','chat:write:bot']
-    // });
-    //
-    // controller.createOauthEndpoints(app, function(err, req, res)    {
-    //     res.status(200).end();
-    // });
-    //
-    // controller.createWebhookEndpoints(app);
-
-    // var incoming_webhook_url;
-    //
-    // controller.on('create_incoming_webhook',function (bot,incoming_webhook) {
-    //     console.log('incoming_webhook----------');
-    //     console.log(incoming_webhook);
-    //     incoming_webhook_url=incoming_webhook.url;
-    // });
-    //
-    // var slack_bot_token;
-    //
-    // controller.on('create_bot',function (_bot,team_bot) {
-    //     console.log('bot-token----------');
-    //     console.log(team_bot.token);
-    //
-    //     slack_bot_token=team_bot.token;
-    //     bot.init(controller, incoming_webhook_url, slack_bot_token);
-    // });
-
-    // controller.storage.teams.all(function (err, teams) {
-    //     console.log('teams----');
-    //     console.log(teams);
-    //     if(teams.length == 0) {
-    //         return;
-    //     }
-    //     console.log(teams[0]);
-    //     bot.init(controller, teams[0].incoming_webhook.url, teams[0].bot.token);
-    // });
 
     controller.startTicking()
 
@@ -98,7 +49,8 @@ function BotKit(app)  {
         console.log(message.callback_id);
         actions[message.callback_id](bot, message);
     });
-
+    // require('./register-botkit-studio')(app, controller)
+    require('./slack-handlers')(app, controller)
     return botkit;
 }
 
