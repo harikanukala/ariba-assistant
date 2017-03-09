@@ -23,7 +23,8 @@ function BotKit(app)  {
 
     controller.startTicking()
 
-    // beepboop_botkit.start(controller, { debug: true })
+    beepboop_botkit.start(controller, { debug: true })
+    require('./slack-handlers')(app, controller)
 
 
     controller.middleware.receive.use(wit.receive);
@@ -50,7 +51,6 @@ function BotKit(app)  {
         actions[message.callback_id](bot, message);
     });
     // require('./register-botkit-studio')(app, controller)
-    require('./slack-handlers')(app, controller)
     return botkit;
 }
 
