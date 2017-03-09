@@ -70,7 +70,7 @@ function BotKit(app)  {
     //     bot.init(controller, teams[0].incoming_webhook.url, teams[0].bot.token);
     // });
 
-    console.log('Starting in Beep Boop multi-team mode')
+    controller.startTicking()
 
     // beepboop_botkit.start(controller, { debug: true })
 
