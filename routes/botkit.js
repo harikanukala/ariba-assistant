@@ -1,71 +1,98 @@
 /**
- * Created by i855845 on 2/13/17.
+ * Created by i854911 on 2/6/17.
  */
-
 const Botkit = require('botkit');
-const actions = require("./actions");
+const actions = require("./acions");
+const bot = require("./bot")();
+const path = require("path");
 
-var botkit = {};
+function BotKit(app)  {
+    var botkit = {};
 
-// Cheking for the slack token
+    // var clientId = '135147242677.142534151139';
+    // var clientSecret = '224502f99ebf322637fd9ef1daaa7303';
 
-// Cheking for the wit token
-// if (!process.env.WIT_TOKEN) {
-//     console.error('Error: Specify a Wit token in an environment variable');
-//     process.exit(1);
-// }
-
-const WIT_TOKEN="PEVL7DWLOGHF6T6ZQPO6KUC6VC2SRNW7";
-
-var wit = require('botkit-witai')({
-    accessToken: WIT_TOKEN,
-    minConfidence: 0.6,
-    logLevel: 'debug'
-});
+// Checking for the wit token
+//     if (!process.env.WIT_TOKEN) {
+//         console.error('Error: Specify a Wit token in an environment variable');
+//         process.exit(1);
+//     }
+    const WIT_TOKEN="PEVL7DWLOGHF6T6ZQPO6KUC6VC2SRNW7";
+    var wit = require('./wit')({
+        accessToken: WIT_TOKEN,
+        apiVersion: '20160516',
+        minConfidence: 0.6,
+        logLevel: 'debug'
+    });
 
 // Creates the Slack bot
-const controller = Botkit.slackbot();
+    const controller = Botkit.slackbot();
 
-// Starts the websocket connection
-var slack_bot = controller.spawn({
-    token: process.env.SLACK_TOKEN
-});
+    // controller.configureSlackApp({
+    //     clientId: clientId,
+    //     clientSecret: clientSecret,
+    //     scopes: ['incoming-webhook','team:read','users:read','channels:read','im:read','im:write','groups:read','emoji:read','chat:write:bot']
+    // });
 
-slack_bot.startRTM(function (err, bot, payload) {
-    if (err) {
-        throw new Error(err)
-    }
+    controller.createOauthEndpoints(app, function(err, req, res)    {
+        res.status(200).end();
+    });
 
-    console.log('Connected to Slack RTM')
-})
+    controller.createWebhookEndpoints(app);
 
-controller.middleware.receive.use(wit.receive);
+    var incoming_webhook_url;
 
-controller.on('bot_channel_join', function (bot, message) {
-    bot.reply(message, "I'm here!")
-})
+    controller.on('create_incoming_webhook',function (bot,incoming_webhook) {
+        console.log('incoming_webhook----------');
+        console.log(incoming_webhook);
+        incoming_webhook_url=incoming_webhook.url;
+    });
 
-controller.on('hello', function(bot, message){
-    console.log("Got Helloooo")
-    bot.reply(message,"Hi I am bot!!")
-});
+    var slack_bot_token;
 
-controller.hears(['(.*)'], 'direct_message,direct_mention,mention', function(bot, message){
-    console.log("*****");
-console.log(message);
+    controller.on('create_bot',function (_bot,team_bot) {
+        console.log('bot-token----------');
+        console.log(team_bot.token);
 
-if(slack_bot === bot)   {
-    console.log("------- Both bots are same------")
+        slack_bot_token=team_bot.token;
+        bot.init(controller, incoming_webhook_url, slack_bot_token);
+    });
+
+    // controller.storage.teams.all(function (err, teams) {
+    //     console.log('teams----');
+    //     console.log(teams);
+    //     if(teams.length == 0) {
+    //         return;
+    //     }
+    //     console.log(teams[0]);
+    //     bot.init(controller, teams[0].incoming_webhook.url, teams[0].bot.token);
+    // });
+
+    controller.middleware.receive.use(wit.receive);
+
+    controller.hears(['(.*)'], 'direct_message,direct_mention,mention', (bot, message) => {
+
+        console.log(message);
+
+        if(message.entities.intent == undefined) {
+            bot.reply(message, "Sorry, I don't understand.");
+            return;
+        }
+        var intent = message.entities.intent[0].value;
+
+        console.log("Intent: " + intent);
+
+        if(actions[intent] == undefined || actions[intent] == null) return;
+        actions[intent](bot, message);
+    });
+
+    controller.on('interactive_message_callback', function(bot, message) {
+        console.log('triggered----');
+        console.log(message.callback_id);
+        actions[message.callback_id](bot, message);
+    });
+
+    return botkit;
 }
-if(message.entities.intent == undefined) {
-    bot.reply(message, "Sorry, I don't understand.");
-    return;
-}
-var intent = message.entities.intent[0].value;
 
-console.log("Intent: " + intent);
-
-actions[intent](bot, message);
-});
-
-module.exports = botkit;
+module.exports = BotKit;
