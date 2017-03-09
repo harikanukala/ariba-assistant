@@ -40,23 +40,23 @@ function BotKit(app)  {
     //
     // controller.createWebhookEndpoints(app);
 
-    var incoming_webhook_url;
-
-    controller.on('create_incoming_webhook',function (bot,incoming_webhook) {
-        console.log('incoming_webhook----------');
-        console.log(incoming_webhook);
-        incoming_webhook_url=incoming_webhook.url;
-    });
-
-    var slack_bot_token;
-
-    controller.on('create_bot',function (_bot,team_bot) {
-        console.log('bot-token----------');
-        console.log(team_bot.token);
-
-        slack_bot_token=team_bot.token;
-        bot.init(controller, incoming_webhook_url, slack_bot_token);
-    });
+    // var incoming_webhook_url;
+    //
+    // controller.on('create_incoming_webhook',function (bot,incoming_webhook) {
+    //     console.log('incoming_webhook----------');
+    //     console.log(incoming_webhook);
+    //     incoming_webhook_url=incoming_webhook.url;
+    // });
+    //
+    // var slack_bot_token;
+    //
+    // controller.on('create_bot',function (_bot,team_bot) {
+    //     console.log('bot-token----------');
+    //     console.log(team_bot.token);
+    //
+    //     slack_bot_token=team_bot.token;
+    //     bot.init(controller, incoming_webhook_url, slack_bot_token);
+    // });
 
     // controller.storage.teams.all(function (err, teams) {
     //     console.log('teams----');
@@ -67,6 +67,11 @@ function BotKit(app)  {
     //     console.log(teams[0]);
     //     bot.init(controller, teams[0].incoming_webhook.url, teams[0].bot.token);
     // });
+
+    console.log('Starting in Beep Boop multi-team mode')
+    
+    require('beepboop-botkit').start(controller, { debug: true })
+
 
     controller.middleware.receive.use(wit.receive);
 
