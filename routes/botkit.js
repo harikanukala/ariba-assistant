@@ -9,8 +9,8 @@ const path = require("path");
 function BotKit(app)  {
     var botkit = {};
 
-    // var clientId = '135147242677.142534151139';
-    // var clientSecret = '224502f99ebf322637fd9ef1daaa7303';
+    var clientId = '135147242677.142534151139';
+    var clientSecret = '224502f99ebf322637fd9ef1daaa7303';
 
 // Checking for the wit token
 //     if (!process.env.WIT_TOKEN) {
@@ -28,11 +28,11 @@ function BotKit(app)  {
 // Creates the Slack bot
     const controller = Botkit.slackbot();
 
-    // controller.configureSlackApp({
-    //     clientId: clientId,
-    //     clientSecret: clientSecret,
-    //     scopes: ['incoming-webhook','team:read','users:read','channels:read','im:read','im:write','groups:read','emoji:read','chat:write:bot']
-    // });
+    controller.configureSlackApp({
+        clientId: clientId,
+        clientSecret: clientSecret,
+        scopes: ['incoming-webhook','team:read','users:read','channels:read','im:read','im:write','groups:read','emoji:read','chat:write:bot']
+    });
 
     controller.createOauthEndpoints(app, function(err, req, res)    {
         res.status(200).end();
