@@ -5,6 +5,7 @@ const Botkit = require('botkit');
 const actions = require("./acions");
 const bot = require("./bot")();
 const path = require("path");
+const beepboop_botkit = require('beepboop-botkit');
 
 function BotKit(app)  {
     var botkit = {};
@@ -69,8 +70,8 @@ function BotKit(app)  {
     // });
 
     console.log('Starting in Beep Boop multi-team mode')
-    
-    require('beepboop-botkit').start(controller, { debug: true })
+
+    beepboop_botkit.start(controller, { debug: true })
 
 
     controller.middleware.receive.use(wit.receive);

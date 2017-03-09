@@ -7,6 +7,7 @@
   },
   "dependencies": {
     "@slack/client": "^3.8.1",
+    "beepboop-botkit": "^1.4.1",
     "body-parser": "~1.15.2",
     "botkit": "^0.4.10",
     "botkit-middleware-witai": "0.0.2",
