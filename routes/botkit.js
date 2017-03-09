@@ -6,7 +6,7 @@ const actions = require("./acions");
 const bot = require("./bot")();
 const path = require("path");
 const beepboop_botkit = require('beepboop-botkit');
-
+var BotkitStorageBeepBoop = require('botkit-storage-beepboop')
 function BotKit(app)  {
     var botkit = {};
 
@@ -19,7 +19,7 @@ function BotKit(app)  {
     });
 
 // Creates the Slack bot
-    const controller = Botkit.slackbot();
+    const controller = Botkit.slackbot({storage: BotkitStorageBeepBoop()});
 
     controller.startTicking()
 

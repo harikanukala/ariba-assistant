@@ -11,6 +11,7 @@
     "body-parser": "~1.15.2",
     "botkit": "^0.4.10",
     "botkit-middleware-witai": "0.0.2",
+    "botkit-storage-beepboop": "^1.0.0",
     "botkit-witai": "^1.0.8",
     "cookie-parser": "~1.4.3",
     "debug": "~2.2.0",
