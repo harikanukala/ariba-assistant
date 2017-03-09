@@ -10,8 +10,8 @@ const beepboop_botkit = require('beepboop-botkit');
 function BotKit(app)  {
     var botkit = {};
 
-    var clientId = '135147242677.142534151139';
-    var clientSecret = '224502f99ebf322637fd9ef1daaa7303';
+    // var clientId = '135147242677.142534151139';
+    // var clientSecret = '224502f99ebf322637fd9ef1daaa7303';
 
 // Checking for the wit token
 //     if (!process.env.WIT_TOKEN) {
@@ -28,6 +28,7 @@ function BotKit(app)  {
 
 // Creates the Slack bot
     const controller = Botkit.slackbot();
+    require('../components/webserver/')(controller)
 
     // controller.configureSlackApp({
     //     clientId: clientId,
@@ -71,7 +72,7 @@ function BotKit(app)  {
 
     console.log('Starting in Beep Boop multi-team mode')
 
-    beepboop_botkit.start(controller, { debug: true })
+    // beepboop_botkit.start(controller, { debug: true })
 
 
     controller.middleware.receive.use(wit.receive);
