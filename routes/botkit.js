@@ -28,17 +28,17 @@ function BotKit(app)  {
 // Creates the Slack bot
     const controller = Botkit.slackbot();
 
-    controller.configureSlackApp({
-        clientId: clientId,
-        clientSecret: clientSecret,
-        scopes: ['incoming-webhook','team:read','users:read','channels:read','im:read','im:write','groups:read','emoji:read','chat:write:bot']
-    });
-
-    controller.createOauthEndpoints(app, function(err, req, res)    {
-        res.status(200).end();
-    });
-
-    controller.createWebhookEndpoints(app);
+    // controller.configureSlackApp({
+    //     clientId: clientId,
+    //     clientSecret: clientSecret,
+    //     scopes: ['incoming-webhook','team:read','users:read','channels:read','im:read','im:write','groups:read','emoji:read','chat:write:bot']
+    // });
+    //
+    // controller.createOauthEndpoints(app, function(err, req, res)    {
+    //     res.status(200).end();
+    // });
+    //
+    // controller.createWebhookEndpoints(app);
 
     var incoming_webhook_url;
 

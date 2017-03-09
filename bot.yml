@@ -1,2 +1,6 @@
-name: Test Bot for BeepBoop
-description: A simple bot example for Beep Boop
+name: test bot
+description: A simple Go bot sample for Beep Boop
+slackscopes:
+  - bot
+  - commands
+  - incoming-webhook
